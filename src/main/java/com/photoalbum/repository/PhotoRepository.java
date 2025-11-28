@@ -76,8 +76,8 @@ public interface PhotoRepository extends JpaRepository<Photo, String> {
     /**
      * Get paginated photos using PostgreSQL LIMIT/OFFSET
      * Migrated from Oracle to PostgreSQL according to Java check item 17: Replace ROWNUM pagination with LIMIT/OFFSET.
-     * @param limit Number of results to return
      * @param offset Starting position (0-based)
+     * @param limit Number of results to return
      * @return List of photos within the specified range
      */
     @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
