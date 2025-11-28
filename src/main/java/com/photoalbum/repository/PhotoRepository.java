@@ -58,8 +58,8 @@ public interface PhotoRepository extends JpaRepository<Photo, String> {
     List<Photo> findPhotosUploadedAfter(@Param("uploadedAt") LocalDateTime uploadedAt);
 
     /**
-     * Find photos by upload month using PostgreSQL EXTRACT function
-     * Migrated from Oracle to PostgreSQL according to Java check item 4: Replace TO_CHAR date functions with EXTRACT.
+     * Find photos by upload month using PostgreSQL TO_CHAR function
+     * Migrated from Oracle to PostgreSQL according to Java check item 4: Replace Oracle TO_CHAR date functions with PostgreSQL equivalents.
      * @param year The year to search for
      * @param month The month to search for
      * @return List of photos uploaded in the specified month
@@ -67,8 +67,8 @@ public interface PhotoRepository extends JpaRepository<Photo, String> {
     @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
                    "mime_type, uploaded_at, width, height " +
                    "FROM photos " +
-                   "WHERE EXTRACT(YEAR FROM uploaded_at)::text = :year " +
-                   "AND LPAD(EXTRACT(MONTH FROM uploaded_at)::text, 2, '0') = :month " +
+                   "WHERE TO_CHAR(uploaded_at, 'YYYY') = :year " +
+                   "AND TO_CHAR(uploaded_at, 'MM') = :month " +
                    "ORDER BY uploaded_at DESC", 
            nativeQuery = true)
     List<Photo> findPhotosByUploadMonth(@Param("year") String year, @Param("month") String month);
@@ -90,12 +90,13 @@ public interface PhotoRepository extends JpaRepository<Photo, String> {
 
     /**
      * Find photos with file size statistics using PostgreSQL analytical functions
-     * Migrated from Oracle to PostgreSQL according to Java check item 3: Replace Oracle-specific SQL functions with PostgreSQL equivalents.
+     * Migrated from Oracle to PostgreSQL according to Java check item 3: Use PostgreSQL-compatible analytical functions.
+     * Note: Using RANK() which is supported in PostgreSQL to preserve original tie-handling behavior.
      * @return List of photos with running totals and rankings
      */
     @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
                    "mime_type, uploaded_at, width, height, " +
-                   "ROW_NUMBER() OVER (ORDER BY file_size DESC) as size_rank, " +
+                   "RANK() OVER (ORDER BY file_size DESC) as size_rank, " +
                    "SUM(file_size) OVER (ORDER BY uploaded_at ROWS UNBOUNDED PRECEDING) as running_total " +
                    "FROM photos " +
                    "ORDER BY uploaded_at DESC", 
