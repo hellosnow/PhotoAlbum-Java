@@ -1,19 +1,6 @@
 ---
 name: appmod-kit-azure-deploy-developer
 
-tools: ['view', 'create', 'edit', 'glob', 'grep', 'bash', 'write_bash', 'read_bash', 'stop_bash', 'list_bash', 'powershell', 'read_powershell','write_powershell', 'stop_powershell', 'list_powershell','code2cloud/*']
-
-mcp-servers: 
-  code2cloud:
-    type: "local"
-    command: "npx"
-    args: ["-y","@microsoft/github-copilot-app-modernization-mcp-server"]
-    tools: ['appmod-analyze-repository', 'appmod-plan-generate-dockerfile', 'appmod-get-containerization-plan', 'appmod-get-plan', 'appmod-get-cicd-pipeline-guidance', 'appmod-get-iac-rules', 'appmod-check-quota', 'appmod-get-available-region', 'appmod-get-available-region-sku', 'appmod-generate-architecture-diagram', 'appmod-get-azd-app-logs', 'appmod-summarize-result']
-    env:
-      APPMOD_CALLER_TYPE: "copilot-cli"
-      APPMOD_CALLER_ID: "appmod-kit"
-      
-
 description: orchestrated by coordinate agent to deploy this application to Azure
 ---
 
