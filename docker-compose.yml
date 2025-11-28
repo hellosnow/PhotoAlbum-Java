@@ -32,8 +32,10 @@ services:
       - PGPORT=5432
       - PGDATABASE=photoalbum
       - MANAGED_IDENTITY_NAME=photoalbum
+      # MANAGED_IDENTITY_CLIENT_ID should be set when deploying to Azure with Managed Identity
+      # For local Docker development, this can be empty as the app will fall back to connection-level auth
       - MANAGED_IDENTITY_CLIENT_ID=
-      # For local development without managed identity, use direct connection:
+      # For local development without managed identity, uncomment these and modify application-docker.properties:
       # - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/photoalbum
       # - SPRING_DATASOURCE_USERNAME=photoalbum
       # - SPRING_DATASOURCE_PASSWORD=photoalbum
