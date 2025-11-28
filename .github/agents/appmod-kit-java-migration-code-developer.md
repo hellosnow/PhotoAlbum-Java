@@ -1,6 +1,5 @@
 ---
 name: appmod-kit-java-migration-code-developer
-  
 description: orchestrated by coordinate agent to finish a migration task given a knowledge base id known as solution id
 ---
 
