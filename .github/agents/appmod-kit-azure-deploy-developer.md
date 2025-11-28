@@ -1,6 +1,5 @@
 ---
 name: appmod-kit-azure-deploy-developer
-
 description: orchestrated by coordinate agent to deploy this application to Azure
 ---
 
