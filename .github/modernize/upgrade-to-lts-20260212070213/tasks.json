@@ -23,7 +23,16 @@
         "passIntegrationTests": "false",
         "securityComplianceCheck": "false"
       },
-      "status": "pending"
+      "status": "success",
+      "taskSummary": "Successfully upgraded Java from version 8 to version 21 (LTS). Updated pom.xml configuration, applied modernization recipes, build passed, and all unit tests passed.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": null,
+        "generateNewIntegrationTests": null,
+        "passUnitTests": "true",
+        "passIntegrationTests": null,
+        "securityComplianceCheck": null
+      }
     },
     {
       "type": "upgrade",
@@ -48,7 +57,16 @@
         "passIntegrationTests": "false",
         "securityComplianceCheck": "false"
       },
-      "status": "pending"
+      "status": "success",
+      "taskSummary": "Successfully upgraded Spring Boot from version 2.7.18 to version 3.4.2 (LTS) with Spring Framework 6.x. Migrated javax.* packages to jakarta.* namespace, build passed, and all unit tests passed.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": null,
+        "generateNewIntegrationTests": null,
+        "passUnitTests": "true",
+        "passIntegrationTests": null,
+        "securityComplianceCheck": null
+      }
     }
   ],
   "metadata": {
