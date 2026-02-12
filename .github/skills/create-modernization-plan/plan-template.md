@@ -60,39 +60,6 @@ Use this template to generate modernization plans for applications. Replace plac
 
 ## Code
 
-**Purpose**: Break down coding work into discrete migration tasks. Each task represents a user-requested migration from one service/component to another, or a specific business logic modernization.
-
-**Breakdown Rules**:
-
-- Create tasks ONLY based on what the user explicitly requested - do not infer or add implicit tasks
-- Group related changes that serve a single user goal into one task (e.g., all changes needed to migrate to PostgreSQL)
-- If the JDK version is under 17, add task to upgrade the JDK to latest version unless user specified not to do it
-- Find relevant migration skills and create one task for each skill
-- **Skill Priority**: Skills are searched in the following order:
-  1. Project skills: Skill with location project
-  2. Built-in skills: Skill with location custom
-- **IMPORTANT**: If there are similar skills defined in project skill `.github/skills/` versus other skills, MUST use the one defined in project.
-- Each task should be independently testable with integration tests
-- Do not add tests for unimpacted code or existing functionality unless user requested
-- **IMPORTANT**: Do NOT read individual skill files at this stage; Do Not include the skill detail in the tasks.
-
-**Java Upgrade Task Guidelines**:
-**IMPORTANT**: Only add upgrade task if the JDK version is under 17 or user explicitly requested. Upgrade task must be the first task if exists
-When creating upgrade tasks for Java projects (current latest versions: Java 17+, Spring Boot 3.x+, Spring Framework 6.x+), create task highest-level upgrade task that encompasses all necessary changes:
-
-- **Spring Boot 3.x upgrade** (when Java 21+ not explicitly requested):
-  - Create a single task: "Upgrade Spring Boot to 3.x"
-  - Include in task description: This upgrade includes JDK 17, Spring Framework 6.x, and migration from JavaEE (javax.*) to Jakarta EE (jakarta.*)
-
-- **Spring Framework 6.x upgrade** (when Java 21+ not explicitly requested and Spring Boot not being upgraded):
-  - Create a single task: "Upgrade Spring Framework to 6.x"
-  - Include in task description: This upgrade includes JDK 17
-
-- **Java 21+ upgrade** (when explicitly requested):
-  - Create a single task: "Upgrade Java to version X"
-  - Include in task description: Specify the target version and related framework impacts
-
-
 **Template**:
 ```markdown
 ### Task 1: [Task Name]

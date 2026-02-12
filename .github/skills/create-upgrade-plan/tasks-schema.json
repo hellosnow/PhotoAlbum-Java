@@ -129,7 +129,8 @@
         "generateNewUnitTests",
         "generateNewIntegrationTests",
         "passUnitTests",
-        "passIntegrationTests"
+        "passIntegrationTests",
+        "securityComplianceCheck"
       ],
       "description": "The task success criteria to validate after task execution.",
       "properties": {
@@ -157,6 +158,11 @@
           "type": ["string", "null"],
           "default": "false",
           "description": "Integration tests must pass when generated. With Azure resources: validates actual connectivity. Without: validates integration logic using mocked clients, use default value if user does not specify"
+        },
+        "securityComplianceCheck": {
+          "type": ["string", "null"],
+          "default": "false",
+          "description": "No known CVEs exist in project dependencies, use default value if user does not specify"
         }
       }
     },
@@ -184,6 +190,10 @@
         "passIntegrationTests": {
           "type": ["string", "null"],
           "description": "Validation status of passIntegrationTests criterion. true means passed, false means failed, null means not yet validated."
+        },
+        "securityComplianceCheck": {
+          "type": ["boolean", "null"],
+          "description": "Validation status of securityComplianceCheck criterion. true means passed, false means failed, null means not yet validated."
         }
       }
     },

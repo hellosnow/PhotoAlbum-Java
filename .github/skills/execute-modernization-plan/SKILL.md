@@ -28,28 +28,32 @@ Given that modernization description, do this:
     - Do not stop task execution until all tasks are completed or any task fails. If one task is started, wait for final result with success, skipped or failed.
 
 3. Custom agent usage to complete the coding task:
-    1) Call custom agent general-purpose for upgrade task of java, include java-version-upgrade, spring-boot-upgrade, spring-framework-upgrade and jakarta-ee-upgrade
-        - call the custom agent with prompt with below format according to task description in the plan:
-
+    1) You must call custom agent general-purpose for upgrade task of java with below prompt according to information from task.json, the upgrade task include java-version-upgrade, spring-boot-upgrade, spring-framework-upgrade and jakarta-ee-upgrade
         ```md
-        upgrade the X from {{v1}} to {{v2}} using java upgrade tools: {{v1}} and {{v2}} is the version and {{v2}} can be 'latest version' of it is not specified
+        Call skill execute-modernization-task to upgrade the X from {{v1}} to {{v2}} using java upgrade tools
+        Here is the upgrade task details:
+          - TaskId (from `id` field)
+          - Description (from `description` field)
+          - Requirements (from `requirements` field)
+          - Environment Configuration (from `environmentConfiguration` field, may be null)
+          - Success Criteria (from `successCriteria` field, includes: passBuild, generateNewUn
+        ```
+        {{v1}} and {{v2}} is the version and {{v2}} can be 'latest version' of it is not specified
+
+    2) You must call custom agent general-purpose for transform task with below prompt according to information from task.json
+        ```md
+        Call skill execute-modernization-task to do the code change
+        Here is the transform task details:
+          - TaskId (from `id` field)
+          - Description (from `description` field)
+          - Requirements (from `requirements` field)
+          - Migration Skills (The skill list from `skills` field used for migration)
+          - Environment Configuration (from `environmentConfiguration` field, may be null)
+          - Success Criteria (from `successCriteria` field, includes: passBuild, generateNewUnitTests, generateNewIntegrationTests, passUnitTests, passIntegrationTests)
+          - modernization-work-folder: The folder to save the modernization plan from input      
         ```
 
-    2) Call custom agent general-purpose for transform task of to migrate from X to Y with skill name, you must call the custom agent with prompt with below information
-
-    3) For all coding tasks above (upgrade and transform), you must include the following information:
-      - Custom agent Role (Dont change):
-        Change the code according to skills, migration requirement, environment configuration and success criteria
-      - Task object in tasks.json as Input (Dont change):
-        - TaskId (from `id` field)
-        - Description (from `description` field)
-        - Requirements (from `requirements` field)
-        - migration-skills (The skill list from `skills` field used for migration)
-        - Environment Configuration (from `environmentConfiguration` field, may be null)
-        - Success Criteria (from `successCriteria` field, includes: passBuild, generateNewUnitTests, generateNewIntegrationTests, passUnitTests, passIntegrationTests)
-        - modernization-work-folder: The folder to save the modernization plan from input      
-      - Output(Dont change):
-        Create a subfolder ${TaskId} under ${modernization-work-folder}. You only need to generate a summary report "modernization-summary.md", under this subfolder to summarize the changes, and there is no need to generate any other documents.
+    3) Only use the skill execute-modernization-task in custom agent to do the code change for each task
     
 
 4. Custom agent usage to complete containerization or deploy task:
@@ -63,5 +67,6 @@ Given that modernization description, do this:
         ```
 
 5. Output of plan execution:
-   - You needn't generate any other documents except the modernization-summary.md for each task
+   - You needn't generate any other documents except the "modernization-summary.md" for each task
    - Just make sure the tasks.json is updated with the final status of each task
+   - Make a commit when all tasks are completed with the changes made in the modernization plan.
