@@ -91,7 +91,7 @@ public class PhotoServiceImpl implements PhotoService {
             // Validate file size
             if (file.getSize() > maxFileSizeBytes) {
                 result.setSuccess(false);
-                result.setErrorMessage(String.format("File size exceeds %dMB limit.", maxFileSizeBytes / 1024 / 1024));
+                result.setErrorMessage("File size exceeds %dMB limit.".formatted(maxFileSizeBytes / 1024 / 1024));
                 logger.warn("Upload rejected: File size {} exceeds limit for {}", 
                     file.getSize(), file.getOriginalFilename());
                 return result;
@@ -137,9 +137,10 @@ public class PhotoServiceImpl implements PhotoService {
             }
 
             // Create photo entity with database BLOB storage
+            // Migrated from Oracle to PostgreSQL according to Java check item 9999.
             Photo photo = new Photo(
                 file.getOriginalFilename(),
-                photoData,  // Store actual photo data in Oracle database
+                photoData,  // Store actual photo data in PostgreSQL database
                 storedFileName,
                 relativePath, // Keep for compatibility, not used for serving
                 file.getSize(),
@@ -155,10 +156,10 @@ public class PhotoServiceImpl implements PhotoService {
                 result.setSuccess(true);
                 result.setPhotoId(photo.getId());
 
-                logger.info("Successfully uploaded photo {} with ID {} to Oracle database", 
+                logger.info("Successfully uploaded photo {} with ID {} to PostgreSQL database", 
                     file.getOriginalFilename(), photo.getId());
             } catch (Exception ex) {
-                logger.error("Error saving photo to Oracle database for {}", file.getOriginalFilename(), ex);
+                logger.error("Error saving photo to PostgreSQL database for {}", file.getOriginalFilename(), ex);
                 result.setSuccess(false);
                 result.setErrorMessage("Error saving photo to database. Please try again.");
             }
@@ -178,20 +179,21 @@ public class PhotoServiceImpl implements PhotoService {
     public boolean deletePhoto(String id) {
         try {
             Optional<Photo> photoOpt = photoRepository.findById(id);
-            if (!photoOpt.isPresent()) {
+            if (photoOpt.isEmpty()) {
                 logger.warn("Photo with ID {} not found for deletion", id);
                 return false;
             }
 
             Photo photo = photoOpt.get();
 
-            // Delete from Oracle database (photos stored as BLOB)
+            // Delete from PostgreSQL database (photos stored as BLOB)
+            // Migrated from Oracle to PostgreSQL according to Java check item 9999.
             photoRepository.delete(photo);
 
-            logger.info("Successfully deleted photo ID {} from Oracle database", id);
+            logger.info("Successfully deleted photo ID {} from PostgreSQL database", id);
             return true;
         } catch (Exception ex) {
-            logger.error("Error deleting photo with ID {} from Oracle database", id, ex);
+            logger.error("Error deleting photo with ID {} from PostgreSQL database", id, ex);
             throw new RuntimeException("Error deleting photo", ex);
         }
     }

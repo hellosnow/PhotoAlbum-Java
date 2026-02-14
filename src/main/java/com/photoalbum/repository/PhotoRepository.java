@@ -17,85 +17,89 @@ public interface PhotoRepository extends JpaRepository<Photo, String> {
 
     /**
      * Find all photos ordered by upload date (newest first)
+     * Migrated from Oracle to PostgreSQL according to Java check item 6: Use lowercase for identifiers in SQL strings.
      * @return List of photos ordered by upload date descending
      */
-    @Query(value = "SELECT ID, ORIGINAL_FILE_NAME, PHOTO_DATA, STORED_FILE_NAME, FILE_PATH, FILE_SIZE, " +
-                   "MIME_TYPE, UPLOADED_AT, WIDTH, HEIGHT " +
-                   "FROM PHOTOS " +
-                   "ORDER BY UPLOADED_AT DESC", 
+    @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
+                   "mime_type, uploaded_at, width, height " +
+                   "FROM photos " +
+                   "ORDER BY uploaded_at DESC", 
            nativeQuery = true)
     List<Photo> findAllOrderByUploadedAtDesc();
 
     /**
      * Find photos uploaded before a specific photo (for navigation)
+     * Migrated from Oracle to PostgreSQL according to Java check item 17: Replace ROWNUM pagination with LIMIT/OFFSET.
      * @param uploadedAt The upload timestamp to compare against
      * @return List of photos uploaded before the given timestamp
      */
-    @Query(value = "SELECT * FROM (" +
-                   "SELECT ID, ORIGINAL_FILE_NAME, PHOTO_DATA, STORED_FILE_NAME, FILE_PATH, FILE_SIZE, " +
-                   "MIME_TYPE, UPLOADED_AT, WIDTH, HEIGHT, ROWNUM as RN " +
-                   "FROM PHOTOS " +
-                   "WHERE UPLOADED_AT < :uploadedAt " +
-                   "ORDER BY UPLOADED_AT DESC" +
-                   ") WHERE ROWNUM <= 10", 
+    @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
+                   "mime_type, uploaded_at, width, height " +
+                   "FROM photos " +
+                   "WHERE uploaded_at < :uploadedAt " +
+                   "ORDER BY uploaded_at DESC " +
+                   "LIMIT 10", 
            nativeQuery = true)
     List<Photo> findPhotosUploadedBefore(@Param("uploadedAt") LocalDateTime uploadedAt);
 
     /**
      * Find photos uploaded after a specific photo (for navigation)
+     * Migrated from Oracle to PostgreSQL according to Java check item 6: Use lowercase for identifiers and replace NVL with COALESCE.
      * @param uploadedAt The upload timestamp to compare against
      * @return List of photos uploaded after the given timestamp
      */
-    @Query(value = "SELECT ID, ORIGINAL_FILE_NAME, PHOTO_DATA, STORED_FILE_NAME, " +
-                   "NVL(FILE_PATH, 'default_path') as FILE_PATH, FILE_SIZE, " +
-                   "MIME_TYPE, UPLOADED_AT, WIDTH, HEIGHT " +
-                   "FROM PHOTOS " +
-                   "WHERE UPLOADED_AT > :uploadedAt " +
-                   "ORDER BY UPLOADED_AT ASC", 
+    @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, " +
+                   "COALESCE(file_path, 'default_path') as file_path, file_size, " +
+                   "mime_type, uploaded_at, width, height " +
+                   "FROM photos " +
+                   "WHERE uploaded_at > :uploadedAt " +
+                   "ORDER BY uploaded_at ASC", 
            nativeQuery = true)
     List<Photo> findPhotosUploadedAfter(@Param("uploadedAt") LocalDateTime uploadedAt);
 
     /**
-     * Find photos by upload month using Oracle TO_CHAR function - Oracle specific
+     * Find photos by upload month using PostgreSQL TO_CHAR function
+     * Migrated from Oracle to PostgreSQL according to Java check item 4: Replace Oracle TO_CHAR date functions with PostgreSQL equivalents.
      * @param year The year to search for
      * @param month The month to search for
      * @return List of photos uploaded in the specified month
      */
-    @Query(value = "SELECT ID, ORIGINAL_FILE_NAME, PHOTO_DATA, STORED_FILE_NAME, FILE_PATH, FILE_SIZE, " +
-                   "MIME_TYPE, UPLOADED_AT, WIDTH, HEIGHT " +
-                   "FROM PHOTOS " +
-                   "WHERE TO_CHAR(UPLOADED_AT, 'YYYY') = :year " +
-                   "AND TO_CHAR(UPLOADED_AT, 'MM') = :month " +
-                   "ORDER BY UPLOADED_AT DESC", 
+    @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
+                   "mime_type, uploaded_at, width, height " +
+                   "FROM photos " +
+                   "WHERE TO_CHAR(uploaded_at, 'YYYY') = :year " +
+                   "AND TO_CHAR(uploaded_at, 'MM') = :month " +
+                   "ORDER BY uploaded_at DESC", 
            nativeQuery = true)
     List<Photo> findPhotosByUploadMonth(@Param("year") String year, @Param("month") String month);
 
     /**
-     * Get paginated photos using Oracle ROWNUM - Oracle specific pagination
-     * @param startRow Starting row number (1-based)
-     * @param endRow Ending row number
-     * @return List of photos within the specified row range
+     * Get paginated photos using PostgreSQL LIMIT/OFFSET
+     * Migrated from Oracle to PostgreSQL according to Java check item 17: Replace ROWNUM pagination with LIMIT/OFFSET.
+     * @param offset Starting position (0-based)
+     * @param limit Number of results to return
+     * @return List of photos within the specified range
      */
-    @Query(value = "SELECT * FROM (" +
-                   "SELECT P.*, ROWNUM as RN FROM (" +
-                   "SELECT ID, ORIGINAL_FILE_NAME, PHOTO_DATA, STORED_FILE_NAME, FILE_PATH, FILE_SIZE, " +
-                   "MIME_TYPE, UPLOADED_AT, WIDTH, HEIGHT " +
-                   "FROM PHOTOS ORDER BY UPLOADED_AT DESC" +
-                   ") P WHERE ROWNUM <= :endRow" +
-                   ") WHERE RN >= :startRow", 
+    @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
+                   "mime_type, uploaded_at, width, height " +
+                   "FROM photos " +
+                   "ORDER BY uploaded_at DESC " +
+                   "LIMIT :limit OFFSET :offset", 
            nativeQuery = true)
-    List<Photo> findPhotosWithPagination(@Param("startRow") int startRow, @Param("endRow") int endRow);
+    List<Photo> findPhotosWithPagination(@Param("offset") int offset, @Param("limit") int limit);
 
     /**
-     * Find photos with file size statistics using Oracle analytical functions - Oracle specific
+     * Find photos with file size statistics using PostgreSQL analytical functions
+     * Migrated from Oracle to PostgreSQL according to Java check item 3: Use PostgreSQL-compatible analytical functions.
+     * Note: Using RANK() which is supported in PostgreSQL to preserve original tie-handling behavior.
      * @return List of photos with running totals and rankings
      */
-    @Query(value = "SELECT ID, ORIGINAL_FILE_NAME, PHOTO_DATA, STORED_FILE_NAME, FILE_PATH, FILE_SIZE, " +
-                   "MIME_TYPE, UPLOADED_AT, WIDTH, HEIGHT, " +
-                   "RANK() OVER (ORDER BY FILE_SIZE DESC) as SIZE_RANK, " +
-                   "SUM(FILE_SIZE) OVER (ORDER BY UPLOADED_AT ROWS UNBOUNDED PRECEDING) as RUNNING_TOTAL " +
-                   "FROM PHOTOS " +
-                   "ORDER BY UPLOADED_AT DESC", 
+    @Query(value = "SELECT id, original_file_name, photo_data, stored_file_name, file_path, file_size, " +
+                   "mime_type, uploaded_at, width, height, " +
+                   "RANK() OVER (ORDER BY file_size DESC) as size_rank, " +
+                   "SUM(file_size) OVER (ORDER BY uploaded_at ROWS UNBOUNDED PRECEDING) as running_total " +
+                   "FROM photos " +
+                   "ORDER BY uploaded_at DESC", 
            nativeQuery = true)
     List<Object[]> findPhotosWithStatistics();
 }
