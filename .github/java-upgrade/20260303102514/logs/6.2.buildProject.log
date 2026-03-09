@@ -1,0 +1,22 @@
+2026-03-03T10:28:58.473Z [INFO] [BaseBuildTool] Firing config modified event for mvn, sleeping for 5 seconds
+2026-03-03T10:28:58.474Z [INFO] [Environment] Running command (Java 21): mvn --version
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: C:\Users\jessiehuang\scoop\apps\maven\3.9.11
+Java version: 21.0.8, vendor: Eclipse Adoptium, runtime: C:\Program Files\Eclipse Adoptium\jdk-21.0.8.9-hotspot
+Default locale: en_US, platform encoding: UTF-8
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
+2026-03-03T10:28:59.341Z [INFO] [BaseBuildTool] New version of mvn: 3.9.11 -> 3.9.11
+2026-03-03T10:28:59.343Z [INFO] [MavenBuildTool] Getting Java version of C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java from pom.xml
+2026-03-03T10:28:59.345Z [INFO] [MavenBuildTool] Searching for pom.xml files in C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java
+2026-03-03T10:28:59.346Z [INFO] [MavenBuildTool] Found pom.xml files: C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java\pom.xml
+2026-03-03T10:28:59.349Z [INFO] [MavenBuildTool] Java version found in C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java\pom.xml: 21
+2026-03-03T10:28:59.350Z [INFO] [BaseBuildTool] Notifying Java version/Config change: '21' || '21'
+2026-03-03T10:28:59.357Z [INFO] [MavenBuildTool] Getting build errors of C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java using Maven
+2026-03-03T10:28:59.358Z [INFO] [Environment] Running command (Java 21): mvn clean test-compile -q -B -fn
+2026-03-03T10:29:16.514Z [INFO] [MavenBuildTool] parsing compilation errors.
+2026-03-03T10:29:16.516Z [INFO] [BaseBuildTool] Found 1 modules: .
+2026-03-03T10:29:16.534Z [INFO] [BaseBuildTool] Finish counting Java and class files
+2026-03-03T10:29:16.536Z [INFO] [MavenBuildTool] Cleaning C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java using Maven
+2026-03-03T10:29:16.537Z [INFO] [Environment] Running command (Java 21): mvn clean -q -B -fn
+2026-03-03T10:29:22.829Z [INFO] Build succeeded! There are no build errors in the project.
+2026-03-03T10:29:22.837Z [INFO] Build project completed. Looking for next task...

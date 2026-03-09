@@ -1,0 +1,14 @@
+2026-03-03T10:28:26.304Z [INFO] [Task.commitChanges](5.1): Committing changes for C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java with message: Upgrade Spring Boot to 3.3.13 and Java to 21, migrate javax to jakarta namespace
+2026-03-03T10:28:26.581Z [INFO] [upgrade-to-lts-20260212134048 b6f4468] Upgrade Spring Boot to 3.3.13 and Java to 21, migrate javax to jakarta namespace
+ 6 files changed, 16 insertions(+), 16 deletions(-)
+
+2026-03-03T10:28:26.653Z [INFO] b6f4468966f837dd39505bfc074426137b3d0155
+
+2026-03-03T10:28:26.774Z [INFO] 4	4	pom.xml
+1	1	src/main/java/com/photoalbum/controller/DetailController.java
+1	1	src/main/java/com/photoalbum/controller/HomeController.java
+1	1	src/main/java/com/photoalbum/controller/PhotoFileController.java
+5	5	src/main/java/com/photoalbum/model/Photo.java
+4	4	src/main/java/com/photoalbum/service/impl/PhotoServiceImpl.java
+
+2026-03-03T10:28:26.799Z [INFO] [Task.commitChanges](5.1): Committed changes for C:\Users\jessiehuang\source\repos\appmod-cli\repos\PhotoAlbum-Java with message: Upgrade Spring Boot to 3.3.13 and Java to 21, migrate javax to jakarta namespace
