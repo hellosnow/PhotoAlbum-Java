@@ -1,6 +1,0 @@
----
-type: specs.openrewrite.org/v1beta/recipe
-name: com.photoalbum.upgrade.milestone2
-displayName: Upgrade to Spring Boot 3.4
-recipeList:
-  - org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_4
