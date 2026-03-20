@@ -1,0 +1,7 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.photoalbum.upgrade.milestone1
+displayName: Upgrade to Spring Boot 3.3 and Java 21
+recipeList:
+  - org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3
+  - org.openrewrite.java.migrate.UpgradeToJava21
