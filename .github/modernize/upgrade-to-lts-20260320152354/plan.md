@@ -10,4 +10,4 @@ See tasks.json for the detailed task breakdown.
 
 | ID | Description | Status |
 |----|-------------|--------|
-| 001-upgrade-java-spring-boot | Upgrade to Java 21 and Spring Boot 3.4 | pending |
+| 001-upgrade-java-spring-boot | Upgrade to Java 21 and Spring Boot 3.4 | success |
