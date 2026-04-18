@@ -1,0 +1,70 @@
+{
+  "$schema": "./tasks-schema.json",
+  "description": "Tasks template for modernization plan. Generated alongside plan.md to track individual migration tasks.",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-spring-boot-3x",
+      "description": "Upgrade Spring Boot from 2.7.18 to 3.x, including Java 8 to 21, Spring Framework 5.x to 6.x, and javax.* to jakarta.* namespace migration",
+      "reason": "Assessment identified Java 8 as legacy (mandatory) and Spring Boot 2.7.18 as End of OSS Support (mandatory). Spring Framework version is also End of OSS Support. These are blocking issues for Azure deployment.",
+      "requirements": "Upgrade the application runtime from Java 8 to Java 21 and Spring Boot from 2.7.18 to the latest 3.x release. This includes migrating from javax.* to jakarta.* namespaces, upgrading Spring Framework to 6.x, and ensuring all dependencies are compatible. Update the Dockerfile base images to use Java 21 runtime. Ensure the application compiles and all existing tests pass after the upgrade.",
+      "environmentConfiguration": null,
+      "skills": [
+        {
+          "name": "create-java-upgrade-plan",
+          "location": "project"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "002-transform-oracle-to-postgresql",
+      "description": "Migrate from Oracle database to Azure Database for PostgreSQL",
+      "reason": "Assessment identified Oracle database dependency (6 incidents) as a potential issue for Azure migration. Oracle-specific SQL queries (ROWNUM, TO_CHAR, NVL) and JDBC configuration require conversion for cloud-native PostgreSQL compatibility.",
+      "requirements": "Migrate the application database from Oracle to Azure Database for PostgreSQL. Convert all Oracle-specific SQL queries and functions to PostgreSQL equivalents. Update the database driver, dialect, and connection configuration. Use Managed Identity for database authentication as required by organizational policy. Ensure all data access patterns and repository queries function correctly with PostgreSQL.",
+      "environmentConfiguration": null,
+      "skills": [
+        {
+          "name": "migration-oracle-to-postgresql",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "003-transform-credentials-to-keyvault",
+      "description": "Migrate plaintext credentials from configuration files to Azure Key Vault",
+      "reason": "Assessment identified hardcoded passwords in application.properties and application-docker.properties (3 incidents). Organizational policy requires all sensitive values to be stored in Azure Key Vault.",
+      "requirements": "Remove all hardcoded credentials and sensitive configuration values from properties files. Integrate with Azure Key Vault for secure secrets management. Use Managed Identity for Key Vault access. Ensure the application can retrieve secrets securely at runtime without plaintext credentials in configuration files or source code.",
+      "environmentConfiguration": null,
+      "skills": [
+        {
+          "name": "migration-plaintext-credential-to-azure-keyvault",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    }
+  ],
+  "metadata": {
+    "planName": "modernization-plan-upgrade",
+    "projectName": "Photo Album",
+    "language": "java",
+    "createdAt": "2026-04-18T08:56:35.063Z",
+    "version": "1.0"
+  }
+}
