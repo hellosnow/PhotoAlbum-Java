@@ -1,0 +1,18 @@
+[
+  {
+    "question": "The playbook targets Java 25 and Spring Boot 4.0+ (charter states 'Spring Boot 2.x and 3.x must be upgraded'). However, the upgrade tool only supports up to Java 21 and Spring Boot 3.x. Should we proceed with Java 21 / Spring Boot 3.x as the maximum currently supported version?",
+    "answer": ""
+  },
+  {
+    "question": "The playbook prohibits SLF4J and requires InternalLogger (com.acme.logging.InternalLogger) for all logging. The project currently uses SLF4J with LoggerFactory in 4 source files. Should we add a task to migrate logging from SLF4J to InternalLogger?",
+    "answer": ""
+  },
+  {
+    "question": "The playbook requires the Result<T> pattern (com.acme.commons.Result) for error handling and prohibits throwing exceptions for business logic flow control. Should we include a task to refactor error handling to use the Result<T> pattern?",
+    "answer": ""
+  },
+  {
+    "question": "The playbook requires ServiceMesh SDK (com.acme.mesh.ServiceMesh) for all service-to-service communication and prohibits RestTemplate, WebClient, and other HTTP clients. If the application has or will have any inter-service calls, should we include a task to integrate with ServiceMesh SDK?",
+    "answer": ""
+  }
+]
